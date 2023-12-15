@@ -1,0 +1,11 @@
+body {
+  margin: 0px 8px;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100dvh;
+}
