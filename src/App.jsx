@@ -6,9 +6,10 @@ import Footer from './components/Footer.jsx';
 import GameTimeline from './utility/GameTimeline.js';
 import { initializeBerries } from './utility/setup.js';
 import Card from './components/Card.jsx';
-import { randomizeArray } from './utility/ArrayRandomizer.js';
+import { randomizeArray } from './utility/ArrayFunctions.js';
 
 const chosenItems = new Map();
+let difficulty = 2;
 
 function App() {
   const [highScore, setHighScore] = useState(0);
@@ -19,13 +20,15 @@ function App() {
   const [gameObjects, setGameObjects] = useState({});
 
   async function runLoad() {
-    return; 
+    if(currentScore !== 0) {
+      setCurrentScore(0);
+    }
+    
     setGameTimeline(GameTimeline.Loading);
     const berries = await initializeBerries();
 
-    console.log(berries);
     // make objects of the berry and return
-    setGameObjects(berries);
+    setGameObjects(randomizeArray(berries).slice(0, 10 * difficulty));
 
     runGame();
   }
@@ -36,9 +39,16 @@ function App() {
 
   function runGameOver() {
     setGameTimeline(GameTimeline.Over);
+    if(currentScore > highScore) {
+      setHighScore(currentScore);
+    }
   }
 
   function cardClick(cardUuid) {
+    //console.log(cardUuid);
+
+    setGameObjects(randomizeArray(gameObjects));
+
     if(chosenItems.has(cardUuid)) {
       runGameOver();
     } else {
@@ -53,24 +63,30 @@ function App() {
         <h2>High score: {highScore}</h2>
         <h3>Current score: {currentScore}</h3>
       </Scoreboard>
-      {
-        gameTimeLine === GameTimeline.NotStarted && 
-        <button type='button' onClick={runLoad}>Start game</button>
-        ||
-        gameTimeLine === GameTimeline.Loading &&
-        <p>Loading...</p>
-        ||
-        gameTimeLine === GameTimeline.Running &&
-        gameObjects.map(item => 
-          <Card name={item.name}
-            uuid={item.uuid}
-            imageLink={item.img_src}
-            key={item.uuid}/>)
-        ||
-        gameTimeLine === GameTimeline.Over &&
-        <p>Over...</p>
-      }
-      <CardContainer/>
+      <CardContainer>
+        {gameTimeLine === GameTimeline.NotStarted && 
+          <button type='button' onClick={runLoad}>Start game</button>
+          ||
+          gameTimeLine === GameTimeline.Loading &&
+          <p>Loading...</p>
+          ||
+          gameTimeLine === GameTimeline.Running &&
+          gameObjects.map(item => 
+            <Card name={item.name}
+              uuid={item.uuid}
+              imageLink={item.img_src}
+              key={item.uuid}
+              onClick={() => cardClick(item.uuid)}/>)
+          ||
+          gameTimeLine === GameTimeline.Over &&
+          (
+          <>
+            <p>Over...</p>
+            <button onClick={runLoad}>Restart</button>
+          </>
+          )
+        }
+      </CardContainer>
       <Footer/>
     </>
   )

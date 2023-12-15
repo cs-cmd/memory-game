@@ -1,5 +1,8 @@
-export default function CardContainer() {
+import './styles/CardContainer.css'
+export default function CardContainer({children}) {
   return (
-    <p>Card Container</p>
+    <main className='card-container'>
+      {children}
+    </main>
   )
 }

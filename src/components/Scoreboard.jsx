@@ -1,4 +1,4 @@
-import '/src/assets/Scoreboard.css'
+import './styles/Scoreboard.css'
 export default function Scoreboard({children}) {
 
   return (

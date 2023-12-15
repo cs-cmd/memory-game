@@ -1,3 +1,8 @@
+:root {
+  --card-background: #F4F07A;
+  --card-background-hover: #B2AD0E;
+} 
+
 body {
   margin: 0px 8px;
 }
