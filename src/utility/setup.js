@@ -11,10 +11,21 @@ async function initializeBerries() {
   const berryItems = await Promise.all(berryInfo.map(element => fetch(element.item.url).then(res => res.json()).then(json => json)));
 
   const berryObjects = berryItems.map(item => {
-    return makeBerryObject(item.name, item.sprites.default, crypto.randomUUID());
+    return makeBerryObject(formatBerryName(item.name), item.sprites.default, crypto.randomUUID());
   })
 
   return berryObjects;
+}
+
+// formats berry name to single word, capitalized 
+// raw: example-berry
+// formatted: Example
+function formatBerryName(rawName) {
+  const dashIndex = rawName.indexOf('-');
+  const firstHalf = rawName.slice(0, dashIndex);
+  const capitalizedFirst = firstHalf.charAt(0).toUpperCase();
+
+  return `${capitalizedFirst}${firstHalf.slice(1)}`;
 }
 
 export { initializeBerries };

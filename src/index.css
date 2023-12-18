@@ -1,10 +1,13 @@
 :root {
   --card-background: #F4F07A;
   --card-background-hover: #B2AD0E;
+  --main-background: #1B8D36;
 } 
 
 body {
   margin: 0px 8px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--main-background);
 }
 
 #root {
@@ -13,4 +16,10 @@ body {
   justify-content: space-between;
   align-items: center;
   height: 100dvh;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  width: min(60%, 850px);
 }
